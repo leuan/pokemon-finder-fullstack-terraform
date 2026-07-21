@@ -72,3 +72,10 @@ For the pokemon image I think I have 2 options:
 Since the PokeAPI repo seems fairly well-maintained and I don't think the focus of this interview is image validation, I will just pass the image directly to the user.
 
 Great :) now we have our initial requirements for the API service. The next thing we should think about is our container setup. I know how to use docker-compose and nginx, but the PDF requires me to use Terraform to deploy them. I've never used Terraform before, so I would have to look at the docs.
+
+## Using Terraform
+It appears that the [Terraform docs](https://developer.hashicorp.com/terraform/tutorials/docker-get-started/docker-build) have a fairly straightforward tutorial for using it with the docker provider. I can add all the configuration for my containers directly there, similarly to docker-compose. 
+
+I should also use a separate file for variables so I don't commit them into the repo. I see that the ability to create variables is provided, but I'm not sure that's the best practice for storing those values in a file. I asked Gemini on more info about this and it seems that I can declare variable schema in a `variables.tf` file and then have a `.tfvars` file with the actual values, which I will not commit into the repo.
+
+If I also use `.auto.tfvars`, I see that they will used automatically when `terraform apply` is called, so that's the way for the moment.
