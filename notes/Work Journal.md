@@ -79,3 +79,8 @@ It appears that the [Terraform docs](https://developer.hashicorp.com/terraform/t
 I should also use a separate file for variables so I don't commit them into the repo. I see that the ability to create variables is provided, but I'm not sure that's the best practice for storing those values in a file. I asked Gemini on more info about this and it seems that I can declare variable schema in a `variables.tf` file and then have a `.tfvars` file with the actual values, which I will not commit into the repo.
 
 If I also use `.auto.tfvars`, I see that they will used automatically when `terraform apply` is called, so that's the way for the moment.
+
+### First Terraform Container
+I'll start with the Terraform example, then add my modifications. I see that there is a newer version of the docker provider, so I'll bump the version to `4.5.0`.
+
+I found a sample terraform .gitignore file. I'll copy the contents to my file in order to avoid commiting any sensitive data to the repo.
