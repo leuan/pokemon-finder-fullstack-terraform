@@ -11,6 +11,7 @@ terraform {
 
 provider "docker" {}
 
+# nginx container
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
   keep_locally = false
@@ -23,4 +24,19 @@ resource "docker_container" "nginx" {
     internal = 80
     external = 8000
   }
+}
+
+# api container
+resource "docker_image" "hh_api" {
+  name         = "hh-api"
+  keep_locally = false
+
+  build {
+    context = "${path.module}/api"
+  }
+}
+
+resource "docker_container" "hh_api" {
+  image = docker_image.hh_api.image_id
+  name  = "hh_api"
 }

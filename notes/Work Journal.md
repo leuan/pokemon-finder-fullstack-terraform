@@ -73,7 +73,7 @@ Since the PokeAPI repo seems fairly well-maintained and I don't think the focus 
 
 Great :) now we have our initial requirements for the API service. The next thing we should think about is our container setup. I know how to use docker-compose and nginx, but the PDF requires me to use Terraform to deploy them. I've never used Terraform before, so I would have to look at the docs.
 
-## Using Terraform
+# Using Terraform
 It appears that the [Terraform docs](https://developer.hashicorp.com/terraform/tutorials/docker-get-started/docker-build) have a fairly straightforward tutorial for using it with the docker provider. I can add all the configuration for my containers directly there, similarly to docker-compose. 
 
 I should also use a separate file for variables so I don't commit them into the repo. I see that the ability to create variables is provided, but I'm not sure that's the best practice for storing those values in a file. I asked Gemini on more info about this and it seems that I can declare variable schema in a `variables.tf` file and then have a `.tfvars` file with the actual values, which I will not commit into the repo.
@@ -96,3 +96,27 @@ I see that I have to run these commands every time I checkout a terraform projec
 Great, now I have my first container created by terraform :)
 
 `terraform show` displays the currently applied configuration
+
+# Back to Go
+Let's circle back to our Go API container. I should think about how to build it. I could probably compile it at build time using a go image, but we can go a step further and decouple our build step from the running image.
+I can use one container to compile the go binary, then copy it into a blank linux image, where I will actually run it. I'm going to start to try and figure that out. By chatting with Gemini and validating with the docker terraform provider docs, I found out that I can build my image using the provider.
+Moreover,  I can use the `triggers` argument to rebuild my image whenever the source code changes.
+
+```tf
+resource "docker_image" "zoo" {
+  name = "zoo"
+  build {
+    context = "."
+  }
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "src/**") : filesha1(f)]))
+  }
+}
+```
+
+## Building the Image
+To run the image, I will use a distroless container as my base, since it doesn't come with unix utils or a shell, lowering my attack surface. [Link to repo](https://github.com/googlecontainertools/distroless)
+
+I built the go binary in a `builder` stage, with C compatibility disabled (because it's pure go), linux os target and `-ldflags="-w -s"` to omit debugging data from the binary in order to reduce the binary size, at Gemini's recommendation.
+
+One thing to note for later, there isn't a go.sum file in the repo yet. I should also copy it when I build the container, to add extra protection against supply chain attacks.
