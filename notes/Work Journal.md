@@ -84,3 +84,15 @@ If I also use `.auto.tfvars`, I see that they will used automatically when `terr
 I'll start with the Terraform example, then add my modifications. I see that there is a newer version of the docker provider, so I'll bump the version to `4.5.0`.
 
 I found a sample terraform .gitignore file. I'll copy the contents to my file in order to avoid commiting any sensitive data to the repo.
+
+I see that I have to run these commands every time I checkout a terraform project:
+- `terraform init` - to initialize the local terraform folder and install the required providers
+- `terraform fmt` - to format my terraform configuration
+- `terraform validate` - to validate the configuration
+
+`terraform apply` applies the configuration. I can use `plan` to preview and verify the changes that will be applied.
+
+![[terraform-test.png.png]]
+Great, now I have my first container created by terraform :)
+
+`terraform show` displays the currently applied configuration
