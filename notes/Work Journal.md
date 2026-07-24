@@ -121,6 +121,14 @@ I built the go binary in a `builder` stage, with C compatibility disabled (becau
 
 One thing to note for later, there isn't a go.sum file in the repo yet. I should also copy it when I build the container, to add extra protection against supply chain attacks.
 
-# Implementing a mock API
+## Implementing a mock API
 In order to have something the nginx proxies to, I need some APIs served by my go container. I will use the Gin framework for this because it's the one I'm more experienced in and it's widely used, well known, and has pretty good documentation.
-I asked Gemini to remind me of the best practice project structure, in order to build a clean API project.
+I asked Gemini to remind me of the best practice project structure, so that everything is tidy.
+
+## Configuring the reverse proxy
+Now, I need to configure nginx to proxy the traffic to the go API container. Normally, if I were to use Kubernetes, I would add the `nginx.conf` file inside a ConfigMap, but since we're using plain docker, I will need to pass the nginx configuration file in a different way. I'm thinking that I have 3 options:
+- build a custom nginx container with the config baked in
+- inject it as a volume
+- or find a way to inject it from terraform
+
+With Gemini's help, I found out that I can use upload blocks to copy the configuration file over to the nginx container.
