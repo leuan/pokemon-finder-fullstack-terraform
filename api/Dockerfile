@@ -9,7 +9,7 @@ RUN go mod download
 COPY . .
 
 # to use a debugger, use without -ldflags
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o ./server
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o ./server ./cmd/server
 
 # I will use a distroless image to minimize attack surface
 # if I need a shell or unix utils, I can use this alpine image instead

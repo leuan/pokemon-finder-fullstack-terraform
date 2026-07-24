@@ -120,3 +120,7 @@ To run the image, I will use a distroless container as my base, since it doesn't
 I built the go binary in a `builder` stage, with C compatibility disabled (because it's pure go), linux os target and `-ldflags="-w -s"` to omit debugging data from the binary in order to reduce the binary size, at Gemini's recommendation.
 
 One thing to note for later, there isn't a go.sum file in the repo yet. I should also copy it when I build the container, to add extra protection against supply chain attacks.
+
+# Implementing a mock API
+In order to have something the nginx proxies to, I need some APIs served by my go container. I will use the Gin framework for this because it's the one I'm more experienced in and it's widely used, well known, and has pretty good documentation.
+I asked Gemini to remind me of the best practice project structure, in order to build a clean API project.
