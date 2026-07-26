@@ -18,6 +18,11 @@ locals {
   hh_api_build_context    = "${path.module}/api"
 }
 
+resource "docker_network" "api_net" {
+  name   = "api_network"
+  driver = "bridge"
+}
+
 # nginx container
 resource "docker_image" "nginx" {
   name         = local.nginx_image_tag
@@ -37,6 +42,12 @@ resource "docker_container" "nginx" {
     content = local.nginx_config
     file    = local.nginx_config_mount_path
   }
+
+  networks_advanced {
+    name = docker_network.api_net.name
+  }
+
+  depends_on = [ docker_container.hh_api ]
 }
 
 # api container
@@ -52,4 +63,8 @@ resource "docker_image" "hh_api" {
 resource "docker_container" "hh_api" {
   image = docker_image.hh_api.image_id
   name  = "hh_api"
+
+  networks_advanced {
+    name = docker_network.api_net.name
+  }
 }

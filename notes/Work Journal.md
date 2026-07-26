@@ -132,3 +132,7 @@ Now, I need to configure nginx to proxy the traffic to the go API container. Nor
 - or find a way to inject it from terraform
 
 With Gemini's help, I found out that I can use upload blocks to copy the configuration file over to the nginx container.
+
+Next, I hit the first roadblock. The nginx container does not resolve the API container. I found out that containers created using the docker terraform provider are attached to the default bridge network by default, where dns resolution of container names does not seem to work. I can solve this by creating an explicit network, which I wanted to do anyways, so I could have an isolated network where our nginx pod and the api container can communicate.
+
+Turns out this was not the root cause. The issue was caused by a typo in my nginx config. I was proxying to `hh-api` but the container name was `hh_api`. Another problem was that nginx was listening on `8000` not `80`, as forwarded in the terraform configuration. I fixed both, but now I get a 502 Bad Gateway error when calling the API. I'm going to start debugging that now.
