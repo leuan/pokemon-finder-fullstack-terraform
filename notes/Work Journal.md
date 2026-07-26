@@ -136,3 +136,8 @@ With Gemini's help, I found out that I can use upload blocks to copy the configu
 Next, I hit the first roadblock. The nginx container does not resolve the API container. I found out that containers created using the docker terraform provider are attached to the default bridge network by default, where dns resolution of container names does not seem to work. I can solve this by creating an explicit network, which I wanted to do anyways, so I could have an isolated network where our nginx pod and the api container can communicate.
 
 Turns out this was not the root cause. The issue was caused by a typo in my nginx config. I was proxying to `hh-api` but the container name was `hh_api`. Another problem was that nginx was listening on `8000` not `80`, as forwarded in the terraform configuration. I fixed both, but now I get a 502 Bad Gateway error when calling the API. I'm going to start debugging that now.
+
+Turns out the 502 error was caused by a podman bug. Both containers were assigned the same IP. After destroying and re-applying the configuration, I managed to get it working properly.
+
+## Implementing the required APIs
+Now that I got the basic infrastructure working, I'll move on to actually implementing the APIs that we need. I created a pokemon service that will query the PokeAPI to retrieve information about the requested pokemon. Next, I will create a Pokemon type in the `domain` package, which will represent the information about our pokemon that we want to return to the user.
