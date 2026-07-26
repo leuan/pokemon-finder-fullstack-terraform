@@ -5,6 +5,7 @@ import (
 	"api/internal/handler"
 	"api/internal/log"
 	"api/internal/service"
+	"io"
 	"log/slog"
 	"os"
 
@@ -12,6 +13,9 @@ import (
 )
 
 func main() {
+	// silence default error writer
+	gin.DefaultErrorWriter = io.Discard
+	
 	// set release mode
 	gin.SetMode(gin.ReleaseMode)
 	

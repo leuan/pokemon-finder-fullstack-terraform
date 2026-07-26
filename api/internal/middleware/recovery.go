@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"api/internal/log"
+	"io"
 	"log/slog"
 	"net/http"
 	"runtime/debug"
@@ -12,6 +13,9 @@ import (
 // RecoveryMiddleware returns a gin custom recovery middleware that logs the stack trace and the error and gracefully ends the HTTP request
 func RecoveryMiddleware() gin.HandlerFunc {
 	return gin.CustomRecovery(func(c *gin.Context, recovered any) {
+		// silence error writer
+		gin.DefaultErrorWriter = io.Discard
+		
 		// capture stack trace
 		stack := string(debug.Stack())
 

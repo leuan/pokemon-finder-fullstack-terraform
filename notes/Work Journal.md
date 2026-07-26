@@ -171,3 +171,4 @@ I also created an utility that retrieves the logger with all the attributes bake
 I am almost ready to get rid of gin's built in middlewares. I just need to create a recovery middleware that also uses my custom logger.
 
 I have also implemented the recovery middleware, which captures the stack trace and logs it with the error, then gracefully returns a 500 response to the user.
+I tested the recovery middleware with a panic inside my Pokemon handler, and it still seems that gin logs the recovery. I asked Gemini about this behaviour and it suggested pointing the default error writer to a no-op writer. Now, we should have logs that are completely in JSON.
