@@ -141,3 +141,5 @@ Turns out the 502 error was caused by a podman bug. Both containers were assigne
 
 ## Implementing the required APIs
 Now that I got the basic infrastructure working, I'll move on to actually implementing the APIs that we need. I created a pokemon service that will query the PokeAPI to retrieve information about the requested pokemon. Next, I will create a Pokemon type in the `domain` package, which will represent the information about our pokemon that we want to return to the user.
+
+In order to simplify the code, I will return the same structure that I receive from PokeAPI, with some fields omitted. This allows me to use the same type for retrieving and returning the data. The initial model also did not contain sprite data, so I added support for `front_default` and `front_shiny` sprites.

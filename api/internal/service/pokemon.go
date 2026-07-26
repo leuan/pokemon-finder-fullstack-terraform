@@ -4,12 +4,13 @@ import (
 	"api/internal/domain"
 )
 
-type PokemonService struct{}
+type PokemonService struct {
+}
 
 func NewPokemonService() *PokemonService {
 	return &PokemonService{}
 }
 
-func getPokemonByID(id int) domain.Pokemon {
-	return domain.Pokemon{}
+func (s *PokemonService) GetPokemonByID(id int) domain.Pokemon {
+	
 }
