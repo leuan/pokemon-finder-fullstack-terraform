@@ -1,20 +1,15 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(pokemonHandler *PokemonHandler) *gin.Engine {
 	router := gin.Default()
 
 	// route declaration here
-	router.GET("/api/v1/hello", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello world!",
-		})
-	})
+	v1 := router.Group("/api/v1")
+	v1.GET("/pokemon/:id", pokemonHandler.GetByID)
 
 	return router
 }

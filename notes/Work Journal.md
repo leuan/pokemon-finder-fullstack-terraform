@@ -149,3 +149,8 @@ I created a basic configuration package, with hardcoded values for the moment. I
 
 ### Implementing the service
 I created a service for communicating with the PokeAPI. Inside the service, there is a `GetPokemonByID `function which makes the call to PokeAPI, using the base path and timeout declared in the configuration, then decodes the response.
+
+### Implementing the handler
+Instead of logging the errors in the handler, I used gin's context feature, which allows me to append errors to the request context in order to log them later in the middleware. Gin's built-in JSON response functions also perform escaping on the contents, so I can trust that what comes from PokeAPI will be safe. I wired up the router, handler and service and tested the API.
+
+### Implementing a logging middleware

@@ -20,18 +20,17 @@ const (
 // ErrNotFound is returned when the requested Pokemon resource does not exist in PokeAPI
 var ErrNotFound = errors.New("PokeAPI returned 404 - not found")
 
-// ErrPokeAPI is returned when PokeAPI returned a status code different than 200 or 404
-var ErrPokeAPI = errors.New("PokeAPI returned an invalid status code")
-
 type PokemonService struct {
-	Config     config.Config
+	Config     *config.Config
 	httpClient *http.Client
 }
 
-func NewPokemonService(cfg config.Config) *PokemonService {
+// NewPokemonService returns a PokemonService that uses a http.Client to make requests with a timeout set in cfg.HTTPClientTimeoutSeconds
+func NewPokemonService(cfg *config.Config) *PokemonService {
 	return &PokemonService{Config: cfg, httpClient: &http.Client{Timeout: time.Duration(cfg.HTTPClientTimeoutSeconds) * time.Second}}
 }
 
+// GetPokemonByID queries PokeAPI to return a Pokemon that corresponds to the provided id
 func (s *PokemonService) GetPokemonByID(ctx context.Context, id int) (domain.Pokemon, error) {
 	// build pokemon api url
 	pokemonURL, err := url.JoinPath(s.Config.PokeAPIHost, POKEMON_BASE_PATH, strconv.Itoa(id))
@@ -59,7 +58,7 @@ func (s *PokemonService) GetPokemonByID(ctx context.Context, id int) (domain.Pok
 
 	// check if status code is not 200
 	if resp.StatusCode != http.StatusOK {
-		return domain.Pokemon{}, ErrPokeAPI
+		return domain.Pokemon{}, fmt.Errorf("PokeAPI returned an invalid status code: %d", resp.StatusCode)
 	}
 
 	// decode the response body
