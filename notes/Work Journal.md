@@ -154,3 +154,20 @@ I created a service for communicating with the PokeAPI. Inside the service, ther
 Instead of logging the errors in the handler, I used gin's context feature, which allows me to append errors to the request context in order to log them later in the middleware. Gin's built-in JSON response functions also perform escaping on the contents, so I can trust that what comes from PokeAPI will be safe. I wired up the router, handler and service and tested the API.
 
 ### Implementing a logging middleware
+I think the app needs at least some audit logging to know who made requests and where from. I also used gin's context errors feature as mentioned above, so I think the best implementation for logging would be a centralized middleware.
+
+I used go's slog library to output JSON logs. I also used google's uuid library to generate request IDs when they are missing.
+I attached the following attributes to the JSON logs:
+- request ID
+- request method
+- request path
+- response status code
+- request duration
+- gin context errors
+
+***Note to self:*** Don't forget to sanitize the request ID header in nginx. Otherwise, attackers could inject their own payloads into the request ID. That wouldn't be nice.
+
+I also created an utility that retrieves the logger with all the attributes baked in from the request context.
+I am almost ready to get rid of gin's built in middlewares. I just need to create a recovery middleware that also uses my custom logger.
+
+I have also implemented the recovery middleware, which captures the stack trace and logs it with the error, then gracefully returns a 500 response to the user.
