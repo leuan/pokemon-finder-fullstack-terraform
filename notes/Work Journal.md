@@ -146,3 +146,6 @@ In order to simplify the code, I will return the same structure that I receive f
 
 ### Handling configuration
 I created a basic configuration package, with hardcoded values for the moment. I will replace its load implementation with something that loads the configuration from environment variables later. 
+
+### Implementing the service
+I created a service for communicating with the PokeAPI. Inside the service, there is a `GetPokemonByID `function which makes the call to PokeAPI, using the base path and timeout declared in the configuration, then decodes the response.
