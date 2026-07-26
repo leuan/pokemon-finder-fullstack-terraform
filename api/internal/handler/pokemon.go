@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"api/internal/log"
 	"api/internal/service"
 	"errors"
 	"net/http"
@@ -18,14 +19,16 @@ func NewPokemonHandler(svc *service.PokemonService) *PokemonHandler {
 }
 
 func (h *PokemonHandler) GetByID(c *gin.Context) {
+	// get logger
+	logger := log.FromContext(c.Request.Context())
+
 	// get id from url
 	idString := c.Param("id")
 
 	// validate id
 	id, err := strconv.Atoi(idString)
 	if err != nil {
-		// attach error to context
-		c.Error(err)
+		logger.Warn("Requested invalid Pokemon ID", "error", err)
 
 		// return http error
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid Pokemon ID"})
@@ -35,15 +38,13 @@ func (h *PokemonHandler) GetByID(c *gin.Context) {
 	// query PokeAPI
 	pokemon, err := h.Service.GetPokemonByID(c.Request.Context(), id)
 	if err != nil {
-		// attach error to context
-		// todo logging middleware!
-		c.Error(err)
-
 		if errors.Is(service.ErrNotFound, err) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "pokemon could not be found"})
 			return
 		}
-		
+
+		// attach unexpected errors to context
+		c.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}

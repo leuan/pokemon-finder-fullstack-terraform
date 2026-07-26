@@ -1,11 +1,17 @@
 package handler
 
 import (
+	"api/internal/log"
+
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter(pokemonHandler *PokemonHandler) *gin.Engine {
-	router := gin.Default()
+	router := gin.New()
+
+	// middleware declaration here
+	router.Use(log.LoggerMiddleware())
+	router.Use(gin.Recovery())
 
 	// route declaration here
 	v1 := router.Group("/api/v1")
