@@ -172,3 +172,13 @@ I am almost ready to get rid of gin's built in middlewares. I just need to creat
 
 I have also implemented the recovery middleware, which captures the stack trace and logs it with the error, then gracefully returns a 500 response to the user.
 I tested the recovery middleware with a panic inside my Pokemon handler, and it still seems that gin logs the recovery. I asked Gemini about this behaviour and it suggested pointing the default error writer to a no-op writer. Now, we should have logs that are completely in JSON.
+
+### Updating the nginx config
+I added configuration for standard proxy headers:
+- host
+- x-real-ip
+- x-forwarded-for
+- x-forwarded-proto
+
+I also configure nginx to send the request id to the user, so that when issues are raised, the user can attach their request id and we would be able to easily cross-reference the logs belonging to that request.
+While doing this, I realized that there is one more thing missing from our API container logs - the user's IP. I will also add that to our request logger.
