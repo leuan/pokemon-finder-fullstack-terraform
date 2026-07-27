@@ -185,3 +185,9 @@ While doing this, I realized that there is one more thing missing from our API c
 
 Also while doing some testing, I noticed a small bug. The base value for the pokemon's stats is always 0. This was caused by a typo in the base stat's json tag. It was called `base` instead of `base_stat`. 
 
+I also asked Gemini for more suggestions to harden the nginx configuration and added them to the config. The only modification I did to them was to set client body size to 0, since we know that our client's won't send bodies.
+I also added a pool of 8 persistent connections between nginx and the api container to lower latency.
+
+Lastly, I added json formatting for nginx's access logs as well.
+
+### Making our Go service configurable
