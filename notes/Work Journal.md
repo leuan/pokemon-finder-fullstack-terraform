@@ -182,3 +182,6 @@ I added configuration for standard proxy headers:
 
 I also configure nginx to send the request id to the user, so that when issues are raised, the user can attach their request id and we would be able to easily cross-reference the logs belonging to that request.
 While doing this, I realized that there is one more thing missing from our API container logs - the user's IP. I will also add that to our request logger.
+
+Also while doing some testing, I noticed a small bug. The base value for the pokemon's stats is always 0. This was caused by a typo in the base stat's json tag. It was called `base` instead of `base_stat`. 
+

@@ -11,7 +11,7 @@ type Pokemon struct {
 }
 
 type PokemonStat struct {
-	Base   int `json:"base"`
+	Base   int `json:"base_stat"`
 	Effort int `json:"effort"`
 	Stat   PokemonStatAPIResource
 }
