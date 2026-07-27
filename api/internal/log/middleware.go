@@ -31,6 +31,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 			slog.String("method", c.Request.Method),
 			slog.String("path", c.Request.URL.Path),
 			slog.String("requestID", reqID),
+			slog.String("clientIP", c.ClientIP()),
 		}
 
 		// bake attributes into logger
