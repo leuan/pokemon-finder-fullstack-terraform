@@ -5,6 +5,7 @@ import (
 	"api/internal/handler"
 	"api/internal/log"
 	"api/internal/service"
+	"fmt"
 	"io"
 	"log/slog"
 	"os"
@@ -22,8 +23,6 @@ func main() {
 	// initialize logger
 	log.InitLogger()
 
-	slog.Info("Starting server...")
-
 	// load configuration
 	cfg, err := config.Load()
 	if err != nil {
@@ -31,13 +30,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	slog.Info("Configuration loaded.")
+
 	// initialize components
 	pokemonService := service.NewPokemonService(cfg)
 	pokemonHandler := handler.NewPokemonHandler(pokemonService)
 	router := handler.NewRouter(pokemonHandler)
 
+	slog.Info(fmt.Sprintf("Starting server on port %d", cfg.ListenPort))
+
 	// start webserver
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(fmt.Sprintf(":%d", cfg.ListenPort)); err != nil {
 		slog.Error("Failed to start web server", "error", err)
 		os.Exit(1)
 	}

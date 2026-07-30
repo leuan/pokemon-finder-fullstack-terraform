@@ -47,7 +47,7 @@ resource "docker_container" "nginx" {
     name = docker_network.api_net.name
   }
 
-  depends_on = [ docker_container.hh_api ]
+  depends_on = [docker_container.hh_api]
 }
 
 # api container
@@ -63,6 +63,13 @@ resource "docker_image" "hh_api" {
 resource "docker_container" "hh_api" {
   image = docker_image.hh_api.image_id
   name  = "hh_api"
+
+  env = [
+    "LOG_LEVEL=json",
+    "LISTEN_PORT=8080",
+    "HTTP_CLIENT_TIMEOUT=30",
+    "POKEAPI_BASE_URL=https://pokeapi.co"
+  ]
 
   networks_advanced {
     name = docker_network.api_net.name

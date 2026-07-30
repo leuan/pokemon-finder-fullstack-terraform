@@ -1,0 +1,7 @@
+package config
+
+const (
+	DEFAULT_POKEAPI_BASE_URL = "https://pokeapi.co"
+	DEFAULT_HTTP_CLIENT_TIMEOUT_SECONDS = 30
+	DEFAULT_LISTEN_PORT = 8080
+)

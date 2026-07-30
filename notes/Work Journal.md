@@ -191,3 +191,6 @@ I also added a pool of 8 persistent connections between nginx and the api contai
 Lastly, I added json formatting for nginx's access logs as well.
 
 ### Making our Go service configurable
+I will use the [viper package](https://github.com/spf13/viper) to implement configuration via environment variables. I've already used this on some other go projects at Lenovo and I'm most comfortable with it. It's alkso pretty widely used. This package will hold a configuration struct containing the configurable values of the go api. It will be initialized and read in main, then passed to any component that needs it.
+I will also use [this validator package](https://github.com/go-playground/validator) for declarative validation of the config, as it provides a better experience than validating each field by hand.
+
