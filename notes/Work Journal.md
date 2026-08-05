@@ -202,3 +202,5 @@ I initialized the project by following the [SvelteKit Documentation](https://sve
 
 One detail that the AI agent missed out is that the dark mode toggle icon turns black when hovered in dark mode, making it almost invisibile. I'm going to attempt to fix the colors first. I managed to make the current components adhere to Skeleton's dark mode implementation and fix the dark mode switch. Before moving to the form implementation, I need to configure a development proxy to the backend, to avoid CORS errors when the UI will call my backend in development mode.
 
+I added a server configuration block that should reroute my API requests to the terraform deployment nginx, so I can call the APIs without any errors.
+
