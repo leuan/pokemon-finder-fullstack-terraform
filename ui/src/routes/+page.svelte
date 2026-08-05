@@ -21,6 +21,14 @@
       loading = false;
     } catch (error) {
       apiError = error;
+      if (!error?.isNotFound) {
+        showCard = false;
+        loading = false;
+        toaster.error({
+          title: 'Error fetching Pokemon',
+          description: error.message || 'An unexpected error occurred.'
+        });
+      }
       return;
     }
   };
@@ -31,7 +39,7 @@
     pokemon = {};
     loading = false;
     apiError = null;
-    toaster.info({title: 'Form cleared', description: "You can start over now."});
+    toaster.info({ title: 'Form cleared', description: 'You can start over now.' });
   }
 </script>
 
