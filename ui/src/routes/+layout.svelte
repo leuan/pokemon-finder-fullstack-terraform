@@ -1,6 +1,6 @@
 <script>
   import './layout.css';
-  import favicon from '$lib/assets/favicon.svg';
+  import favicon from '$lib/assets/favicon.png';
   import Lightswitch from '$lib/components/Lightswitch.svelte';
   import { AppBar } from '@skeletonlabs/skeleton-svelte';
   import { resolve } from '$app/paths';
