@@ -43,7 +43,11 @@
         <fieldset class="fieldset grid grid-cols-2 space-x-4">
           <legend class="legend font-bold text-secondary-300-700">Stats</legend>
           {#each pokemonData.stats as stat (stat.stat.name)}
-            <p><span class="pr-1 font-bold capitalize">{stat.stat.name}:</span>{stat.base_stat}</p>
+            <p>
+              <span class="pr-1 font-bold capitalize"
+                >{stat.stat.name === 'hp' ? 'HP' : stat.stat.name}:</span
+              >{stat.base_stat}
+            </p>
           {/each}
         </fieldset>
       </div>

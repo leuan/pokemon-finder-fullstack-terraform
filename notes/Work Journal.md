@@ -216,3 +216,5 @@ After testing the API call, I moved on to create the Pokemon card that will show
 While implementing the card, I found another API bug: the stat API resource did not have a json tag, causing it to be named `Stat` instead of `stat` in the API response. I also fixed that.
 
 I also added a case in my API utility to check if the response code is 404 and pass this flag to the card to display a not found message. For other kinds of errors, I will try to implement a toast message.
+
+But first, I will add ID validation to the form so that the submit logic will not be called if the ID is invalid.
