@@ -11,7 +11,11 @@ export const fetchPokemonById = async (id) => {
   });
 
   if (!response.ok) {
-    throw new Error(`Error fetching Pokémon with ID ${id}: ${response.statusText}`);
+    let err = new Error(`Error fetching Pokémon with ID ${id}: ${response.statusText}`);
+    if (response.status === 404) {
+      err.isNotFound = true;
+    }
+    throw err;
   }
 
   return await response.json();

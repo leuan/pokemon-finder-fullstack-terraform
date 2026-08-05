@@ -210,3 +210,9 @@ First, I played around with a form example from the Skeleton docs and modified t
 Then, I extracted the form in a separate component, with callbacks for submit and clear actions and a binding for a `formData` parameter, which is an object that contains an `id` attribute (the ID of the Pokemon).
 
 Now, it's time to wire up the form component to the API. I will log the results to the console for the moment. I created a function that fetches the pokemon data using the API and wired it up to my form. Initially, it did not work because I misplaced the server configuration block in vite, but after I fixed that, I was able to see the correct pokemon fetched in the logs.
+
+After testing the API call, I moved on to create the Pokemon card that will show upon clicking the submit button. I used a `loading` prop to mark the card content as still loading and used Skeleton's placeholder components to create placeholder animation while the pokemon data is loading.
+
+While implementing the card, I found another API bug: the stat API resource did not have a json tag, causing it to be named `Stat` instead of `stat` in the API response. I also fixed that.
+
+I also added a case in my API utility to check if the response code is 404 and pass this flag to the card to display a not found message. For other kinds of errors, I will try to implement a toast message.
