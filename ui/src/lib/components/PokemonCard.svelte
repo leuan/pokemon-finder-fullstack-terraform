@@ -25,7 +25,7 @@
       <div class="w-full space-y-4">
         <div>
           <p class="text-5xl font-bold capitalize">{pokemonData.name}</p>
-          <p class="font-bold text-secondary-300-700 italic">ID: {pokemonData.id}</p>
+          <p class="font-bold text-secondary-300-700 italic pl-1">ID: {pokemonData.id}</p>
         </div>
         <div class="card bg-surface-50-950 p-2">
           <img
