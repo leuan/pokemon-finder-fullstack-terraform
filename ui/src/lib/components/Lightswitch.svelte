@@ -18,7 +18,7 @@
 
 <button
   type="button"
-  class="btn-icon rounded-full hover:preset-tonal"
+  class="btn-icon rounded-full text-primary-700-300 hover:preset-tonal-primary"
   aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
   onclick={toggleTheme}
 >

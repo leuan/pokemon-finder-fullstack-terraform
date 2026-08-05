@@ -10,11 +10,17 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<div class="min-h-screen bg-background-50 text-text-900 transition-colors">
-  <AppBar class="shadow-s sticky top-0 z-40 bg-background-100 shadow-secondary-700 backdrop-blur">
+<div
+  class="min-h-screen bg-surface-50-950 text-text-900-100 transition-colors"
+>
+  <AppBar
+    class="shadow-md sticky top-0 z-40 bg-surface-100-900 shadow-text-700-300 backdrop-blur"
+  >
     <AppBar.Toolbar class="flex justify-between">
       <AppBar.Lead class="p-4">
-        <a href={resolve('/')} class=" text-xl font-bold text-primary-600">Pokemon finder</a>
+        <a href={resolve('/')} class=" text-xl font-bold text-primary-600-400"
+          >Pokemon Finder</a
+        >
       </AppBar.Lead>
       <AppBar.Trail class="p-4">
         <Lightswitch />
