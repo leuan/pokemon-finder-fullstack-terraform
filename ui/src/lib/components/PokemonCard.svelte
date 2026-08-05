@@ -2,7 +2,7 @@
   let { pokemonData = {}, isNotFound = false, loading = false } = $props();
 </script>
 
-<div class="shadow-text-700-300 min-w-1/4 space-y-4 card bg-surface-100-900 p-4 shadow-md">
+<div class="shadow-text-700-300 min-w-1/4 space-y-4 card bg-surface-100-900 p-4 shadow-md border-2 border-primary-200-800 corner-shape-squircle rounded-4xl">
   {#if isNotFound}
     <p>Sorry, your Pokemon could not be found. :(</p>
   {:else}

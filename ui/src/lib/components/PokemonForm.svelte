@@ -48,7 +48,7 @@
 <div class="form-container min-w-1/4">
   <form
     onsubmit={handleSubmit}
-    class="shadow-text-700-300 max-w-md space-y-4 card bg-surface-100-900 p-4 shadow-md"
+    class="shadow-text-700-300 max-w-md space-y-4 card bg-surface-100-900 p-4 shadow-md border-2 corner-shape-squircle rounded-4xl border-primary-200-800"
   >
     <header>
       <h3 class="h3">Look up a Pokemon</h3>
@@ -65,10 +65,10 @@
       </label>
     </fieldset>
     <footer class="flex justify-between">
-      <button type="button" onclick={handleClear} class="btn bg-error-400-600 text-error-900-100"
+      <button type="button" onclick={handleClear} class="btn bg-error-400-600 text-error-900-100 corner-shape-squircle rounded-2xl"
         >Clear</button
       >
-      <button type="submit" class="btn bg-primary-300-700">Search</button>
+      <button type="submit" class="btn bg-primary-300-700 corner-shape-squircle rounded-2xl">Search</button>
     </footer>
   </form>
 </div>
