@@ -218,3 +218,5 @@ While implementing the card, I found another API bug: the stat API resource did 
 I also added a case in my API utility to check if the response code is 404 and pass this flag to the card to display a not found message. For other kinds of errors, I will try to implement a toast message.
 
 But first, I will add ID validation to the form so that the submit logic will not be called if the ID is invalid.
+
+After setting up the toaster utility (and realizing I missed an import for the Skeleton library) I replaced the invalid form messages with toaster notification, and added ones for clearing the form and non-404 status API errors.
