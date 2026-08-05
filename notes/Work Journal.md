@@ -204,3 +204,7 @@ One detail that the AI agent missed out is that the dark mode toggle icon turns 
 
 I added a server configuration block that should reroute my API requests to the terraform deployment nginx, so I can call the APIs without any errors.
 
+## UI components
+First, I played around with a form example from the Skeleton docs and modified to look like the form I need to use: an ID input, a submit button and a clear button.
+
+Then, I extracted the form in a separate component, with callbacks for submit and clear actions and a binding for a `formData` parameter, which is an object that contains an `id` attribute (the ID of the Pokemon).
