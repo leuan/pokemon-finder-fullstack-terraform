@@ -2,6 +2,7 @@
   import PokemonForm from '$lib/components/PokemonForm.svelte';
   import { fetchPokemonById } from '$lib/api';
   import PokemonCard from '$lib/components/PokemonCard.svelte';
+  import { toaster } from '$lib/toaster';
 
   let loading = $state(false);
   let showCard = $state(false);
@@ -30,6 +31,7 @@
     pokemon = {};
     loading = false;
     apiError = null;
+    toaster.info({title: 'Form cleared', description: "You can start over now."});
   }
 </script>
 
