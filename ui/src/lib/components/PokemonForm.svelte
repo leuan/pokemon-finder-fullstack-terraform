@@ -68,7 +68,7 @@
       <button type="button" onclick={handleClear} class="btn bg-error-400-600 text-error-900-100"
         >Clear</button
       >
-      <button type="submit" class="btn bg-primary-300-700">Submit</button>
+      <button type="submit" class="btn bg-primary-300-700">Search</button>
     </footer>
   </form>
 </div>
