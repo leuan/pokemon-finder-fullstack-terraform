@@ -1,17 +1,14 @@
 <script>
-  let { formData = $bindable({ id: null }), onSubmit = () => {}, onClear = () => {} } = $props();
+  import { toaster } from '$lib/toaster';
 
-  let showValidationError = $state(false);
+  let { formData = $bindable({ id: null }), onSubmit = () => {}, onClear = () => {} } = $props();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // validate the form
-    showValidationError = false;
-
     const check = validateFormData(formData);
     if (!check) {
-      showValidationError = true;
       return;
     }
 
@@ -27,10 +24,18 @@
     const idNumber = Number(formData.id);
 
     if (!Number.isFinite(idNumber)) {
+      toaster.error({
+        title: 'Invalid ID',
+        description: 'Please enter a valid number for the Pokemon ID.'
+      });
       console.error('ID is not a valid number:', formData.id);
       return false;
     }
     if (idNumber <= 0) {
+      toaster.error({
+        title: 'Invalid ID',
+        description: 'Please enter a number greater than 0 for the Pokemon ID.'
+      });
       console.error('ID is not greater than 0:', formData.id);
       return false;
     }
@@ -48,11 +53,6 @@
     <header>
       <h3 class="h3">Look up a Pokemon</h3>
     </header>
-    {#if showValidationError}
-      <p class="font-bold text-error-900-100 italic">
-        ID is invalid! Please use a number greater than 0.
-      </p>
-    {/if}
     <fieldset class="fieldset space-y-2">
       <label class="label">
         <span class="label-text">Pokemon ID</span>
