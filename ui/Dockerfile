@@ -3,7 +3,7 @@ FROM oven/bun:1.3.14-debian as builder
 WORKDIR /app
 
 COPY package.json .
-COPY bun.lockb .
+COPY bun.lock .
 
 RUN bun install --frozen-lockfile
 
