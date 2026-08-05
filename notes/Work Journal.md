@@ -208,3 +208,5 @@ I added a server configuration block that should reroute my API requests to the 
 First, I played around with a form example from the Skeleton docs and modified to look like the form I need to use: an ID input, a submit button and a clear button.
 
 Then, I extracted the form in a separate component, with callbacks for submit and clear actions and a binding for a `formData` parameter, which is an object that contains an `id` attribute (the ID of the Pokemon).
+
+Now, it's time to wire up the form component to the API. I will log the results to the console for the moment. I created a function that fetches the pokemon data using the API and wired it up to my form. Initially, it did not work because I misplaced the server configuration block in vite, but after I fixed that, I was able to see the correct pokemon fetched in the logs.

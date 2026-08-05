@@ -12,15 +12,15 @@ export default defineConfig({
         runes: ({ filename }) =>
           filename.split(/[/\\]/).includes('node_modules') ? undefined : true
       },
-      server: {
-        proxy: {
-          '/api': {
-            target: 'http://localhost:8000',
-            changeOrigin: true
-          }
-        }
-      },
       adapter: adapter()
     })
-  ]
+  ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      }
+    }
+  }
 });
