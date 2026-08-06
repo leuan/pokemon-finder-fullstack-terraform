@@ -231,3 +231,7 @@ For now, I am going to focus on securing the communication between the user's br
 First step would be to generate the certificate served by the ingress. I don't have a publicly registered domain for this application, and I'm not looking to make it available on the internet, so I can't use an ACME client to generate a certificate signed by a trusted CA. Instead, I am going to generate a self-signed certificate. With the help of Gemini, I found out that I can use [Hashicorp's TLS provider](https://registry.terraform.io/providers/hashicorp/tls/latest/docs) to generate a self-signed certificate. For my private key, I picked the ECDSA algorithm with a 256 bit-key, since it's the industry standard.
 
 Now that I have a certificate configured, I need to inject it in my nginx container. For this, I can use the `upload` block, just like I did with `nginx.conf`.
+
+Lastly, I need to configure nginx to serve on HTTPS and use the certificate I just injected.
+I kept the server block for port 80, in order to redirect HTTP requests to HTTPS. This ensures that the user will not use http if they type it in by mistake like this.
+I also added some of the suggestions made by Gemini  to the config, like the `Strict-Transport-Security` header and ssl session caching. I also updated the forwarded ports in the nginx container terraform config to actually expose nginx on ports 8080 and 8443. Since nginx will upgrade the connection from 80 to 443, the redirect will not work unless the external ports are also 80 and 443.

@@ -32,7 +32,7 @@ resource "tls_private_key" "ingress_private_key" {
 }
 
 resource "tls_self_signed_cert" "ingress_cert" {
-  private_key_pem = tls_private_key.ingress_private_key
+  private_key_pem = tls_private_key.ingress_private_key.private_key_pem
 
   subject {
     common_name  = "localhost"
@@ -100,7 +100,12 @@ resource "docker_container" "hh_ui" {
 
   ports {
     internal = 80
-    external = 8000
+    external = 8080
+  }
+
+  ports {
+    internal = 443
+    external = 8443
   }
 
   # inject nginx config
@@ -116,7 +121,7 @@ resource "docker_container" "hh_ui" {
   }
 
   upload {
-    content = tls_private_key.ingress_private_key
+    content = tls_private_key.ingress_private_key.private_key_pem
     file    = "/etc/nginx/certs/key.pem"
   }
 
