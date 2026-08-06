@@ -24,3 +24,9 @@ variable "ingress_https_port" {
   description = "HTTPS listen port for the Nginx ingress"
   default     = 8443
 }
+
+variable "ingress_tls_ip_addresses" {
+  type        = list(string)
+  description = "List of IP addresses to include in the TLS certificate Subject Alternative Names (SANs)"
+  default     = ["127.0.0.1", "::1"]
+}

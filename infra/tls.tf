@@ -8,7 +8,7 @@ resource "tls_self_signed_cert" "ingress_cert" {
   private_key_pem = tls_private_key.ingress_private_key.private_key_pem
 
   subject {
-    common_name  = "localhost"
+    common_name  = var.ingress_hostname
     organization = "Pokemon Finder"
   }
 
@@ -21,6 +21,6 @@ resource "tls_self_signed_cert" "ingress_cert" {
     "server_auth",
   ]
 
-  dns_names    = ["localhost"]
-  ip_addresses = ["127.0.0.1"]
+  dns_names    = [var.ingress_hostname]
+  ip_addresses = var.ingress_tls_ip_addresses
 }

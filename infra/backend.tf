@@ -1,4 +1,12 @@
 # api container
+
+locals {
+  backend_host                           = "hh_api"
+  backend_port                           = 8080
+  backend_pokeapi_client_timeout_seconds = 30
+  backend_pokeapi_base_url               = "https://pokeapi.co"
+}
+
 resource "docker_image" "hh_api" {
   name         = "hh-api"
   keep_locally = false
@@ -10,13 +18,13 @@ resource "docker_image" "hh_api" {
 
 resource "docker_container" "hh_api" {
   image = docker_image.hh_api.image_id
-  name  = "hh_api"
+  name  = local.backend_host
 
   env = [
     "LOG_LEVEL=json",
-    "LISTEN_PORT=8080",
-    "HTTP_CLIENT_TIMEOUT=30",
-    "POKEAPI_BASE_URL=https://pokeapi.co"
+    "LISTEN_PORT=${local.backend_port}",
+    "HTTP_CLIENT_TIMEOUT_SECONDS=${local.backend_pokeapi_client_timeout_seconds}",
+    "POKEAPI_BASE_URL=${local.backend_pokeapi_base_url}"
   ]
 
   networks_advanced {

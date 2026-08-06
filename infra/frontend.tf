@@ -14,18 +14,23 @@ resource "docker_container" "hh_ui" {
 
   ports {
     internal = 80
-    external = 8080
+    external = var.ingress_http_port
   }
 
   ports {
     internal = 443
-    external = 8443
+    external = var.ingress_https_port
   }
 
   # inject nginx config
   upload {
-    content = local.nginx_config
-    file    = local.nginx_config_mount_path
+    content = templatefile("${path.module}/nginx/nginx.conf.tftpl", {
+      ingress_hostname   = var.ingress_hostname
+      ingress_https_port = var.ingress_https_port
+      backend_host       = local.backend_host
+      backend_port       = local.backend_port
+    })
+    file = local.nginx_config_mount_path
   }
 
   # inject certificate and key
