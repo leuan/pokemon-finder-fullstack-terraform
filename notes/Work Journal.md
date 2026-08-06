@@ -235,3 +235,9 @@ Now that I have a certificate configured, I need to inject it in my nginx contai
 Lastly, I need to configure nginx to serve on HTTPS and use the certificate I just injected.
 I kept the server block for port 80, in order to redirect HTTP requests to HTTPS. This ensures that the user will not use http if they type it in by mistake like this.
 I also added some of the suggestions made by Gemini  to the config, like the `Strict-Transport-Security` header and ssl session caching. I also updated the forwarded ports in the nginx container terraform config to actually expose nginx on ports 8080 and 8443. Since nginx will upgrade the connection from 80 to 443, the redirect will not work unless the external ports are also 80 and 443.
+
+# Structuring the Terraform code
+Right now, our Terraform configuration sits in one big file. I did this because it was much simpler to learn it without overthinking project structure. Now that the project is reaching completion, I think it would be a good idea to break down the `main.tf` file into smaller components. It would also be good to make the infrastructure configurable, using variables. This way, important configuration such as the ingress ports are easier to find and modify if needed.
+
+Firstly, I think that I should give the terraform configuration its own folder. This way, the code in the repo is clearly structured into separate folders: ui, api, and terraform code
+
