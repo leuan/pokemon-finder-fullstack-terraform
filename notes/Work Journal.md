@@ -220,3 +220,12 @@ I also added a case in my API utility to check if the response code is 404 and p
 But first, I will add ID validation to the form so that the submit logic will not be called if the ID is invalid.
 
 After setting up the toaster utility (and realizing I missed an import for the Skeleton library) I replaced the invalid form messages with toaster notification, and added ones for clearing the form and non-404 status API errors.
+
+I will leave the implementation for displaying the shiny variants of Pokemon for later, if I have time for it. I want to focus on the loose ends left first, such as HTTPS configuration, breaking down the terraform configuration into smaller files and introducing terraform variables.
+
+# HTTPS
+Up until now, I've configured nginx to only use HTTP. Since the communication between the containers happens in an isolated network, I don't think it's worth implementing HTTPS communication between nginx and the API container for now. It would be nice if I took it a step further if I implemented mTLS comms between the containers, with the help of a solution like LinkerD or Envoy.
+
+For now, I am going to focus on securing the communication between the user's browser and the ingress (nginx). 
+
+First step would be to generate the certificate served by the ingress. I don't have a publicly registered domain for this application, and I'm not looking to make it available on the internet, so I can't use an ACME client to generate a certificate signed by a trusted CA. Instead, I am going to generate a self-signed certificate. With the help of Gemini, I found out that I can use [Hashicorp's TLS provider](https://registry.terraform.io/providers/hashicorp/tls/latest/docs) to generate a self-signed certificate. For my private key, I picked the ECDSA algorithm with a 256 bit-key, since it's the industry standard.

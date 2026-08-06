@@ -6,17 +6,50 @@ terraform {
       # use ~> to allow minor patch updates
       version = "~> 4.5.0"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.3.0"
+    }
   }
+}
+
+locals {
+  nginx_config                 = file("${path.module}/nginx/nginx.conf")
+  nginx_config_mount_path      = "/etc/nginx/conf.d/default.conf"
+  nginx_image_tag              = "nginx:1.31.3"
+  hh_ui_build_context          = "${path.module}/ui"
+  hh_api_build_context         = "${path.module}/api"
+  ingress_cert_validtity_hours = 2160 # valid for 90 days
+  ingress_early_renewal_hours  = 720 # window for renewal
 }
 
 provider "docker" {}
 
-locals {
-  nginx_config            = file("${path.module}/nginx/nginx.conf")
-  nginx_config_mount_path = "/etc/nginx/conf.d/default.conf"
-  nginx_image_tag         = "nginx:1.31.3"
-  hh_ui_build_context     = "${path.module}/ui"
-  hh_api_build_context    = "${path.module}/api"
+# nginx TLS
+resource "tls_private_key" "ingress_private_key" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+
+resource "tls_self_signed_cert" "ingress_cert" {
+  private_key_pem = tls_private_key.ingress_private_key
+
+  subject {
+    common_name  = "localhost"
+    organization = "Pokemon Finder"
+  }
+
+  validity_period_hours = local.ingress_cert_validtity_hours
+  early_renewal_hours = local.ingress_early_renewal_hours
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
+
+  dns_names    = ["localhost"]
+  ip_addresses = ["127.0.0.1"]
 }
 
 resource "docker_network" "api_net" {
