@@ -20,7 +20,7 @@ locals {
   hh_ui_build_context          = "${path.module}/ui"
   hh_api_build_context         = "${path.module}/api"
   ingress_cert_validtity_hours = 2160 # valid for 90 days
-  ingress_early_renewal_hours  = 720 # window for renewal
+  ingress_early_renewal_hours  = 720  # window for renewal
 }
 
 provider "docker" {}
@@ -40,7 +40,7 @@ resource "tls_self_signed_cert" "ingress_cert" {
   }
 
   validity_period_hours = local.ingress_cert_validtity_hours
-  early_renewal_hours = local.ingress_early_renewal_hours
+  early_renewal_hours   = local.ingress_early_renewal_hours
 
   allowed_uses = [
     "key_encipherment",
@@ -103,9 +103,21 @@ resource "docker_container" "hh_ui" {
     external = 8000
   }
 
+  # inject nginx config
   upload {
     content = local.nginx_config
     file    = local.nginx_config_mount_path
+  }
+
+  # inject certificate and key
+  upload {
+    content = tls_self_signed_cert.ingress_cert.cert_pem
+    file    = "/etc/nginx/certs/cert.pem"
+  }
+
+  upload {
+    content = tls_private_key.ingress_private_key
+    file    = "/etc/nginx/certs/key.pem"
   }
 
   networks_advanced {
