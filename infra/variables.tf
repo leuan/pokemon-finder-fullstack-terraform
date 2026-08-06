@@ -14,13 +14,13 @@ variable "ingress_hostname" {
 }
 
 variable "ingress_http_port" {
-  type        = string
+  type        = number
   description = "HTTP listen port for the Nginx ingress"
   default     = 8080
 }
 
 variable "ingress_https_port" {
-  type        = string
+  type        = number
   description = "HTTPS listen port for the Nginx ingress"
   default     = 8443
 }
