@@ -241,3 +241,12 @@ Right now, our Terraform configuration sits in one big file. I did this because 
 
 Firstly, I think that I should give the terraform configuration its own folder. This way, the code in the repo is clearly structured into separate folders: ui, api, and terraform code
 
+Secondly, I'm going to break down the `main.tf` file into this structure:
+- versions.tf - provider configuration
+- variables.tf - variables
+- outputs.tf - output data confiuguration
+- network.tf - network configuration
+- tls.tf - tls certificate configuration
+- backend.tf - API container configuration
+- frontend.tf - frontend container configuration
+
