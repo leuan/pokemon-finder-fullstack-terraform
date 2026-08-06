@@ -12,8 +12,8 @@ resource "tls_self_signed_cert" "ingress_cert" {
     organization = "Pokemon Finder"
   }
 
-  validity_period_hours = local.ingress_cert_validtity_hours
-  early_renewal_hours   = local.ingress_early_renewal_hours
+  validity_period_hours = var.ingress_cert_validity_hours
+  early_renewal_hours   = var.ingress_cert_renewal_window_hours
 
   allowed_uses = [
     "key_encipherment",
