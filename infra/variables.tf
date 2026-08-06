@@ -1,11 +1,3 @@
-locals {
-  nginx_config                = file("${path.module}/nginx/nginx.conf")
-  nginx_config_mount_path     = "/etc/nginx/conf.d/default.conf"
-  hh_ui_build_context         = "${path.module}/../ui"
-  hh_api_build_context        = "${path.module}/../api"
-  ingress_early_renewal_hours = 720 # window for renewal
-}
-
 variable "ingress_hostname" {
   type        = string
   description = "Public facing hostname or IP for the Nginx ingress and self-signed TLS certificate"
@@ -40,4 +32,28 @@ variable "ingress_cert_renewal_window_hours" {
   type        = number
   default     = 720 # 30 days
   description = "Length of ingress TLS certificate renewal window, in hours"
+}
+
+variable "backend_build_context" {
+  type        = string
+  description = "Path to the backend build context relative to the root module"
+  default     = "../api"
+}
+
+variable "backend_dockerfile" {
+  type        = string
+  description = "Name or relative path of the Dockerfile within the build context"
+  default     = "Dockerfile"
+}
+
+variable "frontend_build_context" {
+  type        = string
+  description = "Path to the backend build context relative to the root module"
+  default     = "../ui"
+}
+
+variable "frontend_dockerfile" {
+  type        = string
+  description = "Name or relative path of the Dockerfile within the build context"
+  default     = "Dockerfile"
 }

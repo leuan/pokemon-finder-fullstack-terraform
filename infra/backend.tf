@@ -5,6 +5,7 @@ locals {
   backend_port                           = 8080
   backend_pokeapi_client_timeout_seconds = 30
   backend_pokeapi_base_url               = "https://pokeapi.co"
+  backend_build_context                  = "${path.module}/${var.backend_build_context}"
 }
 
 resource "docker_image" "hh_api" {
@@ -12,7 +13,8 @@ resource "docker_image" "hh_api" {
   keep_locally = false
 
   build {
-    context = local.hh_api_build_context
+    context    = local.backend_build_context
+    dockerfile = var.backend_dockerfile
   }
 }
 

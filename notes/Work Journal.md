@@ -250,3 +250,7 @@ Secondly, I'm going to break down the `main.tf` file into this structure:
 - backend.tf - API container configuration
 - frontend.tf - frontend container configuration
 
+In order to make nginx configurable through terraform, it would be a good idea to convert the configuration to a terraform template. Using a template also allows me to configure nginx to redirect HTTP requests to HTTPS requests with any port configured for it. I used variables in the template for the nginx host and ports, and for the backend container's host and port.
+Then, I added variables for configuring the TLS certificate validity period and renewal window duration.
+Lastly, I created variables for the backend and frontend docker build contexts and dockerfile names.
+

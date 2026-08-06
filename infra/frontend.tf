@@ -1,10 +1,16 @@
+locals {
+  frontend_build_context  = "${path.module}/${var.frontend_build_context}"
+  nginx_config_mount_path = "/etc/nginx/conf.d/default.conf"
+}
+
 # ui container
 resource "docker_image" "hh_ui" {
   name         = "hh-ui"
   keep_locally = false
 
   build {
-    context = local.hh_ui_build_context
+    context    = local.frontend_build_context
+    dockerfile = var.frontend_dockerfile
   }
 }
 
