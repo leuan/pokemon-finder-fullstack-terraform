@@ -92,7 +92,7 @@ I see that I have to run these commands every time I checkout a terraform projec
 
 `terraform apply` applies the configuration. I can use `plan` to preview and verify the changes that will be applied.
 
-![[terraform-test.png.png]]
+![[terraform-test.png.png|674]]
 Great, now I have my first container created by terraform :)
 
 `terraform show` displays the currently applied configuration
@@ -253,4 +253,7 @@ Secondly, I'm going to break down the `main.tf` file into this structure:
 In order to make nginx configurable through terraform, it would be a good idea to convert the configuration to a terraform template. Using a template also allows me to configure nginx to redirect HTTP requests to HTTPS requests with any port configured for it. I used variables in the template for the nginx host and ports, and for the backend container's host and port.
 Then, I added variables for configuring the TLS certificate validity period and renewal window duration.
 Lastly, I created variables for the backend and frontend docker build contexts and dockerfile names.
+
+One extra thing... I forgot about the outputs file! I added the TLS certificate and the HTTPS URL of the application to the outputs.
+
 
