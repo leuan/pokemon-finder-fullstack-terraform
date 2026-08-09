@@ -18,13 +18,28 @@ resource "docker_container" "hh_ui" {
   image = docker_image.hh_ui.image_id
   name  = "hh_ui"
 
+  user = "101:101" # nginx-unprivileged user
+
+  read_only = true
+
+  // allow write to /tmp
+  tmpfs = {
+    "/tmp" = "rw,noexec,nosuid,size=32m"
+  }
+
+  capabilities {
+    drop = ["ALL"]
+  }
+
+  security_opts = ["no-new-privileges:true"]
+
   ports {
-    internal = 80
+    internal = 8080
     external = var.ingress_http_port
   }
 
   ports {
-    internal = 443
+    internal = 8443
     external = var.ingress_https_port
   }
 

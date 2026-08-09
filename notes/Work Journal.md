@@ -275,3 +275,8 @@ Lastly, I will set resource limits for the container. I will start with some sma
 For the CPU limits, I set `cpu_shares` to 1024. I will set this attribute for the nginx container to 512, to have a 2:1 priority for the CPU load between the 2 containers.
 
 Finally, I will replace the hardcoded values with Terraform variables so that they are easier to tweak.
+
+# Securing the frontend container
+I will attempt to go through similar steps as I did for the backend container. I do not have a distroless image for nginx. I could probably build an nginx image based on google's distroless images, but that would require significantly more time and effort. I found a better alternative, to use the [official nginx unprivileged images](https://hub.docker.com/r/nginxinc/nginx-unprivileged). This image runs nginx with the `101:101` user. I have to make some changes to my nginx config, though, to be able to drop the linux capability that allows the process to listen on privileged ports. Instead, I will let docker forward the traffic on 80 and 443 to ports 8080 and 8443.
+
+I enforced a read-only file system as I did for the backend container, however, I added an exception for the /tmp folder, where nginx writes its buffers.

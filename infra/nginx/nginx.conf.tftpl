@@ -21,8 +21,8 @@ log_format json_analytics escape=json
   '}';
 
 server {
-  listen 80;
-  listen [::]:80;
+  listen 8080;
+  listen [::]:8080;
   server_name ${ingress_hostname};
 
   # Redirect all HTTP requests to HTTPS
@@ -30,8 +30,8 @@ server {
 }
 
 server {
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
+  listen 8443 ssl http2;
+  listen [::]:8443 ssl http2;
   server_name ${ingress_hostname};
 
   # use the keys injected by terraform
