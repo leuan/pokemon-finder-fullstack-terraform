@@ -33,6 +33,11 @@ resource "docker_container" "hh_ui" {
 
   security_opts = ["no-new-privileges:true"]
 
+  init = true
+
+  memory     = var.frontend_memory_mb
+  cpu_shares = var.frontend_cpu_shares
+
   ports {
     internal = 8080
     external = var.ingress_http_port

@@ -72,3 +72,15 @@ variable "frontend_dockerfile" {
   description = "Name or relative path of the Dockerfile within the build context"
   default     = "Dockerfile"
 }
+
+variable "frontend_memory_mb" {
+  description = "Hard memory limit for the frontend API container in MB"
+  type        = number
+  default     = 128
+}
+
+variable "frontend_cpu_shares" {
+  description = "Relative CPU share priority for the frontend API container."
+  type        = number
+  default     = 512
+}

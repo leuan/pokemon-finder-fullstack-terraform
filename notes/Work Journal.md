@@ -279,4 +279,4 @@ Finally, I will replace the hardcoded values with Terraform variables so that th
 # Securing the frontend container
 I will attempt to go through similar steps as I did for the backend container. I do not have a distroless image for nginx. I could probably build an nginx image based on google's distroless images, but that would require significantly more time and effort. I found a better alternative, to use the [official nginx unprivileged images](https://hub.docker.com/r/nginxinc/nginx-unprivileged). This image runs nginx with the `101:101` user. I have to make some changes to my nginx config, though, to be able to drop the linux capability that allows the process to listen on privileged ports. Instead, I will let docker forward the traffic on 80 and 443 to ports 8080 and 8443.
 
-I enforced a read-only file system as I did for the backend container, however, I added an exception for the /tmp folder, where nginx writes its buffers.
+I enforced a read-only file system as I did for the backend container, however, I added an exception for the /tmp folder, where nginx writes its buffers. I also set a memory limit and a cpu shares weight.
