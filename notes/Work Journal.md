@@ -256,4 +256,22 @@ Lastly, I created variables for the backend and frontend docker build contexts a
 
 One extra thing... I forgot about the outputs file! I added the TLS certificate and the HTTPS URL of the application to the outputs.
 
+# Security
+While building this project, I realized I overlooked some of the enhancements I could do to improve the security of the application, such as running the container processes as non-root, dropping linux capabilities and setting resource limits. I will try to also cover these as best as I can.
 
+## Securing the backend container
+First, I would need to configure a non-root user. Since I am using Google's distroless images, I can switch to the nonroot tag, which is configured by default to use user `65532:65532`. I would also need to pass the chown flag when copying the binary over from the builder stage, to make sure that the nonroot user can actually execute it. In the Terraform configuration, I will also configure the user as `65532:65532` and set a read-only file system, to ensure that if an attacker gained control of the API server binary, they wouldn't be able to modify the file system. 
+
+Next, I will drop all capabilities, to prevent the attacker of making any good use of the root user, even if they managed to gain its privileges. I will also add the 
+```
+security_opts = [
+	"no-new-privileges:true"
+]
+```
+block in order to prevent any child processes from being created with higher privileges than the API server process , `init = true` to avoid running the binary as PID 1.
+
+Lastly, I will set resource limits for the container. I will start with some small limits since this Go server is pretty light. Normally, I would have to monitor the application under load using an observability stack like Prometheus paired with Grafana and tweak the limits based on the results. I also passed the`GOGC = 100` and `GOMEMLIMIT=220MiB` (about 85% of the memory limit) environment variables to the binary, so that the garbage collector will attempt to prevent the server from reaching the limit more aggressively.
+
+For the CPU limits, I set `cpu_shares` to 1024. I will set this attribute for the nginx container to 512, to have a 2:1 priority for the CPU load between the 2 containers.
+
+Finally, I will replace the hardcoded values with Terraform variables so that they are easier to tweak.

@@ -1,3 +1,4 @@
+# ingress
 variable "ingress_hostname" {
   type        = string
   description = "Public facing hostname or IP for the Nginx ingress and self-signed TLS certificate"
@@ -34,6 +35,7 @@ variable "ingress_cert_renewal_window_hours" {
   description = "Length of ingress TLS certificate renewal window, in hours"
 }
 
+# backend
 variable "backend_build_context" {
   type        = string
   description = "Path to the backend build context relative to the root module"
@@ -46,6 +48,19 @@ variable "backend_dockerfile" {
   default     = "Dockerfile"
 }
 
+variable "backend_memory_mb" {
+  description = "Hard memory limit for the backend API container in MB"
+  type        = number
+  default     = 256
+}
+
+variable "backend_cpu_shares" {
+  description = "Relative CPU share priority for the backend API container."
+  type        = number
+  default     = 1024
+}
+
+# frontend
 variable "frontend_build_context" {
   type        = string
   description = "Path to the backend build context relative to the root module"

@@ -14,10 +14,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o ./server ./cmd/server
 # I will use a distroless image to minimize attack surface
 # if I need a shell or unix utils, I can use this alpine image instead
 # FROM alpine:3.24
-FROM gcr.io/distroless/static-debian13:latest
+FROM gcr.io/distroless/static-debian13:nonroot
 WORKDIR /app
 
-COPY --from=builder /app/server .
+COPY --from=builder --chown=65532:65532 /app/server .
 
 EXPOSE 8080
 

@@ -6,6 +6,7 @@ locals {
   backend_pokeapi_client_timeout_seconds = 30
   backend_pokeapi_base_url               = "https://pokeapi.co"
   backend_build_context                  = "${path.module}/${var.backend_build_context}"
+  backend_gomemlimit                     = floor(var.backend_memory_mb * 0.85) # 85% of container memory limit
 }
 
 resource "docker_image" "hh_api" {
@@ -22,7 +23,25 @@ resource "docker_container" "hh_api" {
   image = docker_image.hh_api.image_id
   name  = local.backend_host
 
+  user = "65532:65532"
+
+  read_only = true
+  security_opts = [
+    "no-new-privileges:true"
+  ]
+
+  capabilities {
+    drop = ["ALL"]
+  }
+
+  init = true
+
+  memory     = var.backend_memory_mb
+  cpu_shares = var.backend_cpu_shares
+
   env = [
+    "GOMEMLIMIT=${local.backend_gomemlimit}MiB",
+    "GOGC=100",
     "LOG_LEVEL=json",
     "LISTEN_PORT=${local.backend_port}",
     "HTTP_CLIENT_TIMEOUT_SECONDS=${local.backend_pokeapi_client_timeout_seconds}",
