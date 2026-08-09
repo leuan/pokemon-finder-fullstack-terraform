@@ -38,6 +38,18 @@ resource "docker_container" "hh_ui" {
   memory     = var.frontend_memory_mb
   cpu_shares = var.frontend_cpu_shares
 
+  ulimit {
+    name = "nofile"
+    soft = var.frontend_max_open_files
+    hard = var.frontend_max_open_files
+  }
+
+  ulimit {
+    name = "nproc"
+    soft = var.frontend_max_processes
+    hard = var.frontend_max_processes
+  }
+
   ports {
     internal = 8080
     external = var.ingress_http_port

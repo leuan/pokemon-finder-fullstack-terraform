@@ -39,6 +39,18 @@ resource "docker_container" "hh_api" {
   memory     = var.backend_memory_mb
   cpu_shares = var.backend_cpu_shares
 
+  ulimit {
+    name = "nofile"
+    soft = var.backend_max_open_files
+    hard = var.backend_max_open_files
+  }
+
+  ulimit {
+    name = "nproc"
+    soft = var.backend_max_processes
+    hard = var.backend_max_processes
+  }
+
   env = [
     "GOMEMLIMIT=${local.backend_gomemlimit}MiB",
     "GOGC=100",

@@ -60,6 +60,18 @@ variable "backend_cpu_shares" {
   default     = 1024
 }
 
+variable "backend_max_processes" {
+  description = "Maximum OS threads (nproc) allowed for the container UID."
+  type        = number
+  default     = 1024
+}
+
+variable "backend_max_open_files" {
+  description = "Maximum file descriptors (nofile) for sockets and files."
+  type        = number
+  default     = 65536
+}
+
 # frontend
 variable "frontend_build_context" {
   type        = string
@@ -84,3 +96,16 @@ variable "frontend_cpu_shares" {
   type        = number
   default     = 512
 }
+
+variable "frontend_max_processes" {
+  description = "Maximum OS threads (nproc) allowed for the container UID."
+  type        = number
+  default     = 1024
+}
+
+variable "frontend_max_open_files" {
+  description = "Maximum file descriptors (nofile) for sockets and files."
+  type        = number
+  default     = 65536
+}
+
